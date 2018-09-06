@@ -1,0 +1,111 @@
+在某一个目录下创建一个空的版本库，然后拉取最新文件
+git svn init https://10.1.0.0/svn/Freshman/trunk/CACommon
+git svn fetch -r HEAD
+——————————————————————
+
+git add	 fileName :添加新文件、提交修改
+
+git commit -m “commit description” :把文件提交到仓库
+
+git status :让用户时刻掌握仓库当前的状态
+
+git diff fileName：查看文件的差别（有哪些地方被修改了）
+
+git log:查询历史记录：从最近到最远的提交日志  在后面添加—pretty=oneline 可以获得简要信息
+
+在git中使用HEAD表示当前版本，也即是最近的提交版本，上一个版本是HEAD^,上上一个版本是HEAD^^,
+为方便，写成：HEAD~n(n表示回退的版本个数）
+git reset —hard HEAD~n:回退到某一版本（该命令还可以把暂存区的修改撤销掉，重新放回工作区。）
+
+git reset HEAD fileName  把暂存区的修改撤销(onstage)掉，重新【放回】工作区
+注意：放回了工作区，但是文件本身还是处于已被修改状态，只是commit不会将其修改同步到仓库中，
+若想要撤销文件本身的修改，还需要使用命令：git checkout —- fileName撤销工作区中该文件的修改。
+
+git reflog ：git使用该命令来记录用户的每一次命令——>查看命令历史history
+
+git中有工作区与暂存区：往版本库中添加文件是分两步执行的：1.使用git add将文件添加到暂存区
+						2.使用git commit提交更改，将暂存区的所有内容提						交到当前分支。
+
+git diff HEAD — readme.txt命令可以查看工作区和版本库里面最新版本的区别。
+
+git checkout — fileName:把文件在工作区的修改全部撤销掉。
+
+git rm fileName :从版本库中删除文件
+
+git remote add origin git@server-name:path/repo-name.git  :关联一个远程库
+git push -u origin master第一次推送master分支的所有内容
+git push origin master（第一次推送之后）推送最新修改到远程库（前提还是得要add和commit）
+git push origin dev  :推送其他分支，比如dev，上面是推送主分支master
+
+git clone 远程库地址：克隆一个仓库     当从远程仓库克隆时，实际上git自动把本地的master分支和远程的
+				    master对应起来了，并且远程仓库的默认名称是origin，要查看
+				    远程库的信息，使用git remote,git remote -v显示详细信息
+
+git branch 分支名：创建分支
+git checkout -b 分支名：创建并切换到该分支
+git branch -d <name>: 删除一个分支（如果该分支还没有被合并，那么使用该命令的结果是：销毁失败）。
+git branch -D <name>:强行删除一个分支，即使该分支还没有被合并。（注意：是大写的D）
+git checkout 分支名：切换到该分支
+git branch :查看当前分支（显示结果会列出所有的分支，当前分支前会标一个*号）
+
+git merge 指定的分支名：合并指定的分支到当前分支
+git branch -d 分支名：删除分支
+
+git pull :抓(拉)取分支
+多人协作的工作模式通常是这样：
+
+	首先，可以试图用git push origin branch-name推送自己的修改；
+
+	如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+
+	如果合并有冲突，则解决冲突，并在本地提交；
+
+	没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+
+	如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，
+	命令git branch --set-upstream branch-name origin/branch-name。
+
+发布一个版本时，我们通常先在版本库中打一个标签（tag），这样，就唯一确定了打标签时刻的版本。将来无论什么时候，取某个标签的版本，就是把那个打标签的时刻的历史版本取出来。所以，标签也是版本库的一个快照。
+
+—————————————————————
+上传项目时可能遇到的问题：
+	在使用git 对源代码进行push到gitHub时可能会出错，信息如下：
+	error: failed to push some refs to 'git@github.com:MrZhangTao/ChessGame.git'
+　　	此时尝试下面的命令把当前分支代码上传到master分支上。
+　　	$ git push -u origin master
+　　	但依然没能解决问题
+　　	出现错误的主要原因是github中的README.md文件不在本地代码目录中
+　　	可以通过如下命令进行代码合并【注：pull=fetch+merge]
+　　	git pull --rebase origin master
+　　	执行上面代码后可以看到本地代码库中多了README.md文件
+
+————————————————————————
+git拉取远程分支并创建本地分支
+一、查看远程分支
+
+使用如下Git命令查看所有远程分支：
+
+git branch -r
+
+二、拉取远程分支并创建本地分支
+
+方法一
+
+使用如下命令：
+
+git checkout -b 本地分支名x origin/远程分支名x
+
+使用该方式会在本地新建分支x，并自动切换到该本地分支x。
+
+方式二
+
+使用如下命令：
+
+git fetch origin 远程分支名x:本地分支名x
+使用该方式会在本地新建分支x，但是不会自动切换到该本地分支x，需要手动checkout。
+
+
+
+使用git add添加要提交的文件的时候，如果文件名是中文，会显示形如 274\232\350\256\256\346\200\273\347\273\223.png 的乱码。 
+解决方案：在bash提示符下输入： git config --global core.quotepath false
+core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常。 
