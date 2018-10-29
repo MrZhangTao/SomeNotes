@@ -311,10 +311,14 @@ MVC是一种“前端”的设计模式。
 
 34.在web开放中，“route”是指根据url分配到(跳转执行)对应的处理程序
 
-35.MAC地址(Media Access Control) 译意为媒体访问控制，或者称之为物理地址，硬件地址。
+35.MAC地址(Media Access Control) 译为媒体访问控制，或者称之为物理地址，硬件地址。
 用来定义网络设备的位置，MAC地址是网卡决定的，是固定的。
 
-36.
+36.requirements.txt 是一个文本文件，它被许多Flask应用程序用来列出运行应用
+所有需要的包：
+    pip freeze > requirements.txt
+
+    pip install -r requments.txt
 
 
 
