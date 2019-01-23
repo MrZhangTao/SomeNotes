@@ -1,2 +1,0 @@
-git svn init https://10.1.0.0/svn/Freshman/trunk/CACommon
-git svn fetch -r HEAD
